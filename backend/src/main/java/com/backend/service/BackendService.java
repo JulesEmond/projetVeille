@@ -2,6 +2,7 @@ package com.backend.service;
 
 import com.backend.models.Client;
 import com.backend.models.Organisme;
+import com.backend.models.Reservation;
 import com.backend.models.User;
 import com.backend.repository.ClientRepository;
 import com.backend.repository.OrganismeRepository;
@@ -9,6 +10,8 @@ import com.backend.repository.ReservationRepository;
 import com.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class BackendService {
@@ -60,5 +63,14 @@ public class BackendService {
         return "invalide";
     }
 
-
+    public Reservation createReservation(int idOrg, Reservation reservation){
+        Organisme organisme = organismeRepository.findById(idOrg);
+        if(organisme != null){
+            reservation.setOrganisme(organisme);
+            reservationRepository.save(reservation);
+            return reservation;
+        } else {
+            return null;
+        }
+    }
 }

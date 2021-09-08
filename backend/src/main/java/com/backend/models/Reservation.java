@@ -15,6 +15,7 @@ public class Reservation implements Serializable {
     @GeneratedValue
     private int id;
 
+    private String description;
     private int nbPlaces;
     private String lieu;
     private LocalDate dateLimite;

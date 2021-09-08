@@ -2,6 +2,7 @@ package com.backend;
 
 import com.backend.models.Client;
 import com.backend.models.Organisme;
+import com.backend.models.Reservation;
 import com.backend.models.User;
 import com.backend.repository.ClientRepository;
 import com.backend.repository.OrganismeRepository;
@@ -15,10 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-//import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -46,6 +50,8 @@ public class BackendTests {
 
         Client c = new Client();
         Organisme o = new Organisme();
+        Reservation r1 = new Reservation();
+        Reservation r2 = new Reservation();
 
         c.setCourriel("exemple1@exemple.com");
         c.setMotDePasse("mdp123");
@@ -57,8 +63,20 @@ public class BackendTests {
         o.setNomOrganisme("comp1");
         o.setNumTelephone("555-555-5555");
 
-        userRepository.saveAll(Arrays.asList(c, o));
+        r1.setDateLimite(LocalDate.now().plusDays(14));
+        r1.setDescription("Spectacle dans les rues");
+        r1.setLieu("Centre-ville");
+        r1.setNbPlaces(2500);
+        r1.setOrganisme(o);
 
+        r2.setDateLimite(LocalDate.of(2021, 5, 25));
+        r2.setDescription("Collecte de déchets");
+        r2.setLieu("Bord de l'eau");
+        r2.setNbPlaces(150);
+        r2.setOrganisme(o);
+
+        userRepository.saveAll(Arrays.asList(c, o));
+        reservationRepository.saveAll(Arrays.asList(r1, r2));
     }
 
     @Test
@@ -106,4 +124,20 @@ public class BackendTests {
         assertNotNull(organismeRepository.findByCourrielIgnoreCaseAndMotDePasse(o.getCourriel(), o.getMotDePasse()));
     }
 
+
+    @Test
+    public void createReservationTest(){
+        Organisme o = organismeRepository.findById(2);
+        assertEquals(2, reservationRepository.findByOrganisme(o).size());
+
+        Reservation r = new Reservation();
+        r.setDateLimite(LocalDate.now().plusDays(7));
+        r.setDescription("Match des Allouettes");
+        r.setLieu("McGill");
+        r.setNbPlaces(15000);
+
+        assertEquals(r, service.createReservation(2, r));
+        assertEquals(3, reservationRepository.findByOrganisme(o).size());
+        assertEquals(3, reservationRepository.findAll().size());
+    }
 }

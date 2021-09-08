@@ -19,6 +19,4 @@ public class Organisme extends User implements Serializable {
 
     private String numTelephone;
 
-    @OneToMany
-    private Set<Reservation> reservations;
 }

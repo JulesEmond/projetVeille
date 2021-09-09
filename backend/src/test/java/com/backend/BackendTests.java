@@ -17,10 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,22 +50,26 @@ public class BackendTests {
         Reservation r1 = new Reservation();
         Reservation r2 = new Reservation();
 
+        //id = 1
         c.setCourriel("exemple1@exemple.com");
         c.setMotDePasse("mdp123");
         c.setNomUtilisateur("exemple1");
         c.setAdresse("123 rue test, Montreal");
 
+        //id = 2
         o.setCourriel("exemple2@exemple.com");
         o.setMotDePasse("mdp456");
         o.setNomOrganisme("comp1");
         o.setNumTelephone("555-555-5555");
 
+        //id = 3
         r1.setDateLimite(LocalDate.now().plusDays(14));
         r1.setDescription("Spectacle dans les rues");
         r1.setLieu("Centre-ville");
         r1.setNbPlaces(2500);
         r1.setOrganisme(o);
 
+        //id = 4
         r2.setDateLimite(LocalDate.of(2021, 5, 25));
         r2.setDescription("Collecte de déchets");
         r2.setLieu("Bord de l'eau");
@@ -139,5 +140,13 @@ public class BackendTests {
         assertEquals(r, service.createReservation(2, r));
         assertEquals(3, reservationRepository.findByOrganisme(o).size());
         assertEquals(3, reservationRepository.findAll().size());
+    }
+
+    @Test
+    public void clientReservationTest(){
+        assertNull(service.clientReservation(14, 10));
+        assertNull(service.clientReservation(1,4));
+        assertTrue(service.clientReservation(1,3).getReservations().contains(reservationRepository.findById(3)));
+        assertTrue(reservationRepository.findById(3).getClients().contains(clientRepository.findById(1)));
     }
 }

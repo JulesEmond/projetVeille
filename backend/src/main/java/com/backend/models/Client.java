@@ -1,14 +1,16 @@
 package com.backend.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(callSuper = false, exclude = "reservations")
 @Entity
 public class Client extends User implements Serializable {
 
@@ -17,7 +19,8 @@ public class Client extends User implements Serializable {
 
     private String adresse;
 
-    @ManyToMany
-    private Set<Reservation> reservations;
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ToString.Exclude
+    private Set<Reservation> reservations = new HashSet<>();
 
 }

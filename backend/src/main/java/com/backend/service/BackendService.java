@@ -11,6 +11,7 @@ import com.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service
@@ -72,5 +73,20 @@ public class BackendService {
         } else {
             return null;
         }
+    }
+    
+    public Client clientReservation(int idClient, int idReservation){
+        Client client = clientRepository.findById(idClient);
+        Reservation reservation = reservationRepository.findById(idReservation);
+        if (client != null && reservation != null){
+            if(reservation.getDateLimite().isAfter(LocalDate.now())) {
+                client.getReservations().add(reservation);
+                reservation.getClients().add(client);
+                clientRepository.save(client);
+                reservationRepository.save(reservation);
+                return client;
+            }
+        }
+        return null;
     }
 }

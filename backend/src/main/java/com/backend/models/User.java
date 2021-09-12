@@ -2,18 +2,16 @@ package com.backend.models;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
 @MappedSuperclass
+@SequenceGenerator(name = "userSeq", initialValue = 1, allocationSize = 10000)
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
     private int id;
 
     private String courriel;

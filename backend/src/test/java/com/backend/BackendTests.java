@@ -41,6 +41,11 @@ public class BackendTests {
     @Autowired
     private BackendService service;
 
+    private int idClient;
+    private int idOrganisme;
+    private int idReservation1;
+    private int idReservation2;
+
 
     @BeforeAll
     public void insertData(){
@@ -50,26 +55,24 @@ public class BackendTests {
         Reservation r1 = new Reservation();
         Reservation r2 = new Reservation();
 
-        //id = 1
         c.setCourriel("exemple1@exemple.com");
         c.setMotDePasse("mdp123");
         c.setNomUtilisateur("exemple1");
         c.setAdresse("123 rue test, Montreal");
 
-        //id = 2
+
         o.setCourriel("exemple2@exemple.com");
         o.setMotDePasse("mdp456");
         o.setNomOrganisme("comp1");
         o.setNumTelephone("555-555-5555");
 
-        //id = 3
+
         r1.setDateLimite(LocalDate.now().plusDays(14));
         r1.setDescription("Spectacle dans les rues");
         r1.setLieu("Centre-ville");
         r1.setNbPlaces(2500);
         r1.setOrganisme(o);
 
-        //id = 4
         r2.setDateLimite(LocalDate.of(2021, 5, 25));
         r2.setDescription("Collecte de déchets");
         r2.setLieu("Bord de l'eau");
@@ -78,6 +81,11 @@ public class BackendTests {
 
         userRepository.saveAll(Arrays.asList(c, o));
         reservationRepository.saveAll(Arrays.asList(r1, r2));
+
+        idClient = c.getId();
+        idOrganisme = o.getId();
+        idReservation1 = r1.getId();
+        idReservation2 = r2.getId();
     }
 
     @Test
@@ -89,9 +97,9 @@ public class BackendTests {
 
     @Test
     public void findTypeTest(){
-        Client client = clientRepository.findById(1);
-        Organisme organisme = organismeRepository.findById(2);
-        Client empty = clientRepository.findById(3);
+        Client client = clientRepository.findById(idClient);
+        Organisme organisme = organismeRepository.findById(idOrganisme);
+        Client empty = clientRepository.findById(400);
 
         assertEquals("client", service.findType(client));
         assertEquals("organisme", service.findType(organisme));
@@ -128,7 +136,7 @@ public class BackendTests {
 
     @Test
     public void createReservationTest(){
-        Organisme o = organismeRepository.findById(2);
+        Organisme o = organismeRepository.findById(idOrganisme);
         assertEquals(2, reservationRepository.findByOrganisme(o).size());
 
         Reservation r = new Reservation();
@@ -137,16 +145,51 @@ public class BackendTests {
         r.setLieu("McGill");
         r.setNbPlaces(15000);
 
-        assertEquals(r, service.createReservation(2, r));
+        assertEquals(r, service.createReservation(idOrganisme, r));
         assertEquals(3, reservationRepository.findByOrganisme(o).size());
         assertEquals(3, reservationRepository.findAll().size());
     }
 
     @Test
     public void clientReservationTest(){
-        assertNull(service.clientReservation(14, 10));
-        assertNull(service.clientReservation(1,4));
-        assertTrue(service.clientReservation(1,3).getReservations().contains(reservationRepository.findById(3)));
-        assertTrue(reservationRepository.findById(3).getClients().contains(clientRepository.findById(1)));
+        assertNull(service.clientReservation(140, 101));
+        assertNull(service.clientReservation(idClient,idReservation2));
+        assertTrue(service.clientReservation(idClient,idReservation1).getReservations().contains(reservationRepository.findById(idReservation1)));
+        assertTrue(reservationRepository.findById(idReservation1).getClients().contains(clientRepository.findById(idClient)));
+        assertNull(service.clientReservation(idClient,idReservation1));
+        assertEquals(2499, reservationRepository.findById(idReservation1).getNbPlaces());
     }
+
+    @Test
+    public void clientAnnulationTest(){
+        service.clientReservation(idClient,idReservation1);
+        assertEquals(2499, reservationRepository.findById(idReservation1).getNbPlaces());
+        assertNull(service.clientAnnulation(140, 101));
+        assertNull(service.clientAnnulation(idClient,idReservation2));
+        assertFalse(service.clientAnnulation(idClient,idReservation1).getReservations().contains(reservationRepository.findById(idReservation1)));
+        assertFalse(reservationRepository.findById(idReservation1).getClients().contains(clientRepository.findById(idClient)));
+        assertNull(service.clientAnnulation(idClient,idReservation1));
+        assertEquals(2500, reservationRepository.findById(idReservation1).getNbPlaces());
+    }
+
+    @Test
+    public void listeReservationDispoTest(){
+        //Création d'une réservation en plus pour les biens du test
+        Reservation r = new Reservation();
+        r.setDateLimite(LocalDate.now().plusDays(7));
+        r.setDescription("Match des Allouettes");
+        r.setLieu("McGill");
+        r.setNbPlaces(15000);
+
+        service.createReservation(idOrganisme, r);
+        assertEquals(3, reservationRepository.findAll().size());
+
+        assertNull(service.listeReservationDispo(140));
+        assertEquals(2, service.listeReservationDispo(idClient).size());
+        service.clientReservation(idClient,idReservation1);
+        assertEquals(1, service.listeReservationDispo(idClient).size());
+        service.clientAnnulation(idClient,idReservation1);
+        assertEquals(2, service.listeReservationDispo(idClient).size());
+    }
+
 }

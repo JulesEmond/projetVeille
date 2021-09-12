@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -79,9 +81,13 @@ public class BackendService {
         Client client = clientRepository.findById(idClient);
         Reservation reservation = reservationRepository.findById(idReservation);
         if (client != null && reservation != null){
-            if(reservation.getDateLimite().isAfter(LocalDate.now())) {
+            if(client.getReservations().contains(reservation)){
+                return null;
+            }
+            else if(reservation.getDateLimite().isAfter(LocalDate.now())) {
                 client.getReservations().add(reservation);
                 reservation.getClients().add(client);
+                reservation.setNbPlaces(reservation.getNbPlaces() - 1);
                 clientRepository.save(client);
                 reservationRepository.save(reservation);
                 return client;
@@ -89,4 +95,38 @@ public class BackendService {
         }
         return null;
     }
+
+    public Client clientAnnulation(int idClient, int idReservation){
+        Client client = clientRepository.findById(idClient);
+        Reservation reservation = reservationRepository.findById(idReservation);
+        if (client != null && reservation != null){
+            if(!client.getReservations().contains(reservation)){
+                return null;
+            }
+            else if(reservation.getDateLimite().isAfter(LocalDate.now())) {
+                client.getReservations().remove(reservation);
+                reservation.getClients().remove(client);
+                reservation.setNbPlaces(reservation.getNbPlaces() + 1);
+                clientRepository.save(client);
+                reservationRepository.save(reservation);
+                return client;
+            }
+        }
+        return null;
+    }
+
+    public List<Reservation> listeReservationDispo(int idClient){
+        Client client = clientRepository.findById(idClient);
+        if(client == null){
+            return null;
+        }
+        List<Reservation> reservations = reservationRepository.findAllByDateLimiteAfter(LocalDate.now());
+        for (Reservation reservation : reservations){
+            if(reservation.getClients().contains(client)){
+                reservations.remove(reservation);
+            }
+        }
+        return reservations;
+    }
+
 }

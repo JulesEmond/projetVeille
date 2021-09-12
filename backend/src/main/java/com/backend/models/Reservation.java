@@ -13,10 +13,11 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(exclude = "clients")
 @Entity
+@SequenceGenerator(name = "reservationSeq", initialValue = 1, allocationSize = 10000)
 public class Reservation implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservationSeq")
     private int id;
 
     private String description;

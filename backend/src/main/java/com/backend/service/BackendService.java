@@ -128,5 +128,28 @@ public class BackendService {
         }
         return reservations;
     }
+    public List<Reservation> listeReservationActuelle(int idClient){
+        Client client = clientRepository.findById(idClient);
+        if(client == null){
+            return null;
+        }
+        List<Reservation> reservations = reservationRepository.findAllByDateLimiteAfter(LocalDate.now());
+        for (int i = 0; i<reservations.size(); i++){
+            if(!client.getReservations().contains(reservations.get(i))){
+                reservations.remove(i);
+                i--;
+            }
+        }
+        return reservations;
+    }
+
+    public List<Reservation> listeReservationOrganisme(int idOrganisme){
+        Organisme organisme = organismeRepository.findById(idOrganisme);
+        if (organisme != null){
+            List<Reservation> reservations = reservationRepository.findByOrganisme(organisme);
+            return reservations;
+        }
+        return null;
+    }
 
 }

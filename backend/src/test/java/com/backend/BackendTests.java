@@ -192,4 +192,41 @@ public class BackendTests {
         assertEquals(2, service.listeReservationDispo(idClient).size());
     }
 
+    @Test
+    public void listeReservationActuelleTest() {
+        //Création d'une réservation pour les biens du test
+        Reservation r = new Reservation();
+        r.setDateLimite(LocalDate.now().plusDays(7));
+        r.setDescription("Match des Allouettes");
+        r.setLieu("McGill");
+        r.setNbPlaces(15000);
+
+        service.createReservation(idOrganisme, r);
+        int idRes = r.getId();
+        assertEquals(3, reservationRepository.findAll().size());
+        assertNull(service.listeReservationActuelle(140));
+        assertEquals(0, service.listeReservationActuelle(idClient).size());
+        service.clientReservation(idClient, idReservation1);
+        assertEquals(1, service.listeReservationActuelle(idClient).size());
+        service.clientReservation(idClient, idRes);
+        assertEquals(2, service.listeReservationActuelle(idClient).size());
+        service.clientAnnulation(idClient,idReservation1);
+        assertEquals(1, service.listeReservationActuelle(idClient).size());
+    }
+
+    @Test
+    public void listeReservationOrganismeTest(){
+        //Création d'une réservation pour les biens du test
+        Reservation r = new Reservation();
+        r.setDateLimite(LocalDate.now().plusDays(7));
+        r.setDescription("Match des Allouettes");
+        r.setLieu("McGill");
+        r.setNbPlaces(15000);
+
+        assertEquals(2, reservationRepository.findAll().size());
+        assertNull(service.listeReservationOrganisme(140));
+        assertEquals(2, service.listeReservationOrganisme(idOrganisme).size());
+        service.createReservation(idOrganisme, r);
+        assertEquals(3, service.listeReservationOrganisme(idOrganisme).size());
+    }
 }

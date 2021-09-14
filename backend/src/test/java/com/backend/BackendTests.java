@@ -49,7 +49,7 @@ public class BackendTests {
 
     @BeforeAll
     public void insertData(){
-
+        //Arrange initial (valeurs de base utilisées dans tous les tests)
         Client c = new Client();
         Organisme o = new Organisme();
         Reservation r1 = new Reservation();
@@ -90,6 +90,7 @@ public class BackendTests {
 
     @Test
     public void loginTest() {
+        //Act et Assert
         assertNull(service.login("bla@bla.com", "mdp789"));
         assertNotNull(service.login("Exemple1@exemple.com", "mdp123"));
         assertNull(service.login("exemple2@exemple.com", "Mdp456"));
@@ -97,10 +98,12 @@ public class BackendTests {
 
     @Test
     public void findTypeTest(){
+        //Arrange
         Client client = clientRepository.findById(idClient);
         Organisme organisme = organismeRepository.findById(idOrganisme);
         Client empty = clientRepository.findById(400);
 
+        //Act et Assert
         assertEquals("client", service.findType(client));
         assertEquals("organisme", service.findType(organisme));
         assertEquals("invalide", service.findType(empty));
@@ -109,13 +112,14 @@ public class BackendTests {
 
     @Test
     public void signupClientTest(){
+        //Arrange
         Client c = new Client();
-
         c.setCourriel("exemple3@exemple.com");
         c.setMotDePasse("exe321");
         c.setNomUtilisateur("exemple3");
         c.setAdresse("345 avenue exemple, Laval");
 
+        //Act et Assert
         assertEquals(c, service.signupClient(c));
         assertNotNull(clientRepository.findByCourrielIgnoreCaseAndMotDePasse(c.getCourriel(), c.getMotDePasse()));
 
@@ -123,12 +127,14 @@ public class BackendTests {
 
     @Test
     public void signupOrganismeTest(){
+        //Arrange
         Organisme o = new Organisme();
         o.setCourriel("exemple4@exemple.com");
         o.setMotDePasse("exe654");
         o.setNomOrganisme("comp2");
         o.setNumTelephone("777-777-7777");
 
+        //Act et Assert
         assertEquals(o, service.signupOrganisme(o));
         assertNotNull(organismeRepository.findByCourrielIgnoreCaseAndMotDePasse(o.getCourriel(), o.getMotDePasse()));
     }
@@ -136,6 +142,7 @@ public class BackendTests {
 
     @Test
     public void createReservationTest(){
+        //Arrange
         Organisme o = organismeRepository.findById(idOrganisme);
         assertEquals(2, reservationRepository.findByOrganisme(o).size());
 
@@ -145,13 +152,17 @@ public class BackendTests {
         r.setLieu("McGill");
         r.setNbPlaces(15000);
 
+        //Act
         assertEquals(r, service.createReservation(idOrganisme, r));
+
+        //Assert
         assertEquals(3, reservationRepository.findByOrganisme(o).size());
         assertEquals(3, reservationRepository.findAll().size());
     }
 
     @Test
     public void clientReservationTest(){
+        //Act et Assert
         assertNull(service.clientReservation(140, 101));
         assertNull(service.clientReservation(idClient,idReservation2));
         assertTrue(service.clientReservation(idClient,idReservation1).getReservations().contains(reservationRepository.findById(idReservation1)));
@@ -162,7 +173,10 @@ public class BackendTests {
 
     @Test
     public void clientAnnulationTest(){
+        //Act
         service.clientReservation(idClient,idReservation1);
+
+        //Assert
         assertEquals(2499, reservationRepository.findById(idReservation1).getNbPlaces());
         assertNull(service.clientAnnulation(140, 101));
         assertNull(service.clientAnnulation(idClient,idReservation2));
@@ -174,59 +188,89 @@ public class BackendTests {
 
     @Test
     public void listeReservationDispoTest(){
-        //Création d'une réservation en plus pour les biens du test
+        //Arrange
         Reservation r = new Reservation();
         r.setDateLimite(LocalDate.now().plusDays(7));
         r.setDescription("Match des Allouettes");
         r.setLieu("McGill");
         r.setNbPlaces(15000);
 
+        //Act
         service.createReservation(idOrganisme, r);
-        assertEquals(3, reservationRepository.findAll().size());
 
+        //Assert
+        assertEquals(3, reservationRepository.findAll().size());
         assertNull(service.listeReservationDispo(140));
         assertEquals(2, service.listeReservationDispo(idClient).size());
+
+        //Act
         service.clientReservation(idClient,idReservation1);
+
+        //Assert
         assertEquals(1, service.listeReservationDispo(idClient).size());
+
+        //Act
         service.clientAnnulation(idClient,idReservation1);
+
+        //Assert
         assertEquals(2, service.listeReservationDispo(idClient).size());
     }
 
     @Test
     public void listeReservationActuelleTest() {
-        //Création d'une réservation pour les biens du test
+        //Arrange
         Reservation r = new Reservation();
         r.setDateLimite(LocalDate.now().plusDays(7));
         r.setDescription("Match des Allouettes");
         r.setLieu("McGill");
         r.setNbPlaces(15000);
 
+        //Act
         service.createReservation(idOrganisme, r);
         int idRes = r.getId();
+
+        //Assert
         assertEquals(3, reservationRepository.findAll().size());
         assertNull(service.listeReservationActuelle(140));
         assertEquals(0, service.listeReservationActuelle(idClient).size());
+
+        //Act
         service.clientReservation(idClient, idReservation1);
+
+        //Assert
         assertEquals(1, service.listeReservationActuelle(idClient).size());
+
+        //Act
         service.clientReservation(idClient, idRes);
+
+        //Assert
         assertEquals(2, service.listeReservationActuelle(idClient).size());
+
+        //Act
         service.clientAnnulation(idClient,idReservation1);
+
+        //Assert
         assertEquals(1, service.listeReservationActuelle(idClient).size());
     }
 
     @Test
     public void listeReservationOrganismeTest(){
-        //Création d'une réservation pour les biens du test
+        //Arrange
         Reservation r = new Reservation();
         r.setDateLimite(LocalDate.now().plusDays(7));
         r.setDescription("Match des Allouettes");
         r.setLieu("McGill");
         r.setNbPlaces(15000);
 
+        //Assert
         assertEquals(2, reservationRepository.findAll().size());
         assertNull(service.listeReservationOrganisme(140));
         assertEquals(2, service.listeReservationOrganisme(idOrganisme).size());
+
+        //Act
         service.createReservation(idOrganisme, r);
+
+        //Assert
         assertEquals(3, service.listeReservationOrganisme(idOrganisme).size());
     }
 }

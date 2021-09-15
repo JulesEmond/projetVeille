@@ -1,1 +1,25 @@
-<p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="validMessage != ''">
+        <h3 class="has-info">{{validMessage}}</h3>
+    </div>
+
+    <div class="form-group pt-4">
+        <label for="courriel">Courriel</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Courriel" formControlName="courriel">
+      </div>
+    <div class="form-group">
+      <label for="motDePasse">Mot de passe</label>
+      <input type="password" class="form-control" id="password" placeholder="Mot de passe" formControlName="motDePasse">
+    </div>
+    
+    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+</form>
+
+<div class="container-fluid pt-5">
+    <h4>Vous n'avez pas de compte? Inscrivez-vous en tant que :</h4>
+    <div class="row">
+            <button type="button" class="btn btn-primary" [routerLink]="['/signinClient']">Client</button>
+            <button type="button" class="btn btn-primary ml-5" [routerLink]="['/signinClient']">Organisme</button>
+    </div>
+</div>
+

@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ComponentScan(basePackages = {"com.backend.service"})
-public class BackendTests {
+public class BackendServiceTest {
 
     @Autowired
     private UserRepository userRepository;

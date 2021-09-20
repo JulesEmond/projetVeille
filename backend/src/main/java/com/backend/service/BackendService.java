@@ -33,13 +33,19 @@ public class BackendService {
 
 
     public Client signupClient (Client client){
-        clientRepository.save(client);
-        return client;
+        if (!organismeRepository.existsByCourriel(client.getCourriel())) {
+            clientRepository.save(client);
+            return client;
+        }
+        return null;
     }
 
     public Organisme signupOrganisme (Organisme organisme){
-        organismeRepository.save(organisme);
-        return organisme;
+        if (!clientRepository.existsByCourriel(organisme.getCourriel())) {
+            organismeRepository.save(organisme);
+            return organisme;
+        }
+        return null;
     }
 
 

@@ -13,4 +13,6 @@ public interface ClientRepository extends JpaRepository <Client, Integer> {
     Client findByCourrielIgnoreCaseAndMotDePasse(String courriel, String pwd);
 
     boolean existsById(int id);
+
+    boolean existsByCourriel(String courriel);
 }

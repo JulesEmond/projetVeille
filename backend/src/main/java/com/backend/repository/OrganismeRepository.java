@@ -13,4 +13,6 @@ public interface OrganismeRepository extends JpaRepository <Organisme, Integer> 
     Organisme findByCourrielIgnoreCaseAndMotDePasse(String courriel, String pwd);
 
     boolean existsById(int id);
+
+    boolean existsByCourriel(String courriel);
 }

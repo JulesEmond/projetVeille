@@ -14,6 +14,8 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
     private int id;
 
+    @Column(unique = true)
     private String courriel;
+
     private String motDePasse;
 }

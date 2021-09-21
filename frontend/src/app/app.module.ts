@@ -10,6 +10,10 @@ import { SigninClientComponent } from './components/signin-client/signin-client.
 import { SigninOrganismeComponent } from './components/signin-organisme/signin-organisme.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Error404Component } from './components/error404/error404.component';
+import { HeaderOrganismeComponent } from './components/header-organisme/header-organisme.component';
+import { AccueilClientComponent } from './components/accueil-client/accueil-client.component';
+import { AccueilOrganismeComponent } from './components/accueil-organisme/accueil-organisme.component';
+import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { Error404Component } from './components/error404/error404.component';
     LoginComponent,
     SigninClientComponent,
     SigninOrganismeComponent,
-    Error404Component
+    Error404Component,
+    HeaderOrganismeComponent,
+    AccueilClientComponent,
+    AccueilOrganismeComponent,
+    SanitizeHtmlPipe
   ],
   imports: [
     BrowserModule,

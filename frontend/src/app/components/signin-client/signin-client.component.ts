@@ -24,6 +24,7 @@ export class SigninClientComponent implements OnInit {
   constructor(private clientService : ClientService, private router : Router) { }
 
   ngOnInit(): void {
+    sessionStorage.clear();
   }
 
   onSubmit(){

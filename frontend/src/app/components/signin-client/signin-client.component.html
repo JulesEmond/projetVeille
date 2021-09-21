@@ -1,3 +1,4 @@
+<div class="container-fluid">
 <form [formGroup]="signinClientForm" (ngSubmit)="onSubmit()">
     <div *ngIf="validMessage != ''">
         <h3 class="has-info">{{validMessage}}</h3>
@@ -21,3 +22,4 @@
     </div>
     <button type="submit" class="btn btn-primary">Envoyez</button>
   </form>
+</div>

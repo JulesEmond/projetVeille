@@ -23,6 +23,7 @@ export class SigninOrganismeComponent implements OnInit {
   constructor(private organismeService : OrganismeService, private router : Router) { }
 
   ngOnInit(): void {
+    sessionStorage.clear();
   }
 
   onSubmit(){

@@ -20,8 +20,12 @@ export class BasicCrud <T, ID> {
     return this.http.get<T[]>(this.url);
   }
 
-  findById(id: ID): Observable<T> {
-    return this.http.get<T>(this.url + '/' + id);
+  findByIdClient(id: ID): Observable<T> {
+    return this.http.get<T>(this.url + '/client/' + id);
+  }
+
+  findByIdOrganisme(id: ID): Observable<T> {
+    return this.http.get<T>(this.url + '/organisme/' + id);
   }
 
   update(id: ID, t: T): Observable<T> {

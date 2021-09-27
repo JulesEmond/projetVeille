@@ -74,7 +74,7 @@ public class BackendService {
 
     public Reservation createReservation(int idOrg, Reservation reservation){
         Organisme organisme = organismeRepository.findById(idOrg);
-        if(organisme != null){
+        if(organisme != null && reservation.getDateLimite().isAfter(LocalDate.now())){
             reservation.setOrganisme(organisme);
             reservationRepository.save(reservation);
             return reservation;

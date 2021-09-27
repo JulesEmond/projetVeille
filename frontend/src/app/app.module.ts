@@ -14,6 +14,7 @@ import { HeaderOrganismeComponent } from './components/header-organisme/header-o
 import { AccueilClientComponent } from './components/accueil-client/accueil-client.component';
 import { AccueilOrganismeComponent } from './components/accueil-organisme/accueil-organisme.component';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
+import { CreerReservationComponent } from './components/creer-reservation/creer-reservation.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
     HeaderOrganismeComponent,
     AccueilClientComponent,
     AccueilOrganismeComponent,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    CreerReservationComponent
   ],
   imports: [
     BrowserModule,

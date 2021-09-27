@@ -16,6 +16,11 @@ export class BasicCrud <T, ID> {
     return this.http.post<T>(this.url + '/organisme', t);
   }
 
+  saveReservation(t: T, id: ID): Observable<T> {
+    return this.http.post<T>(this.url + '/reservation/' + id, t);
+  }
+
+
   findAll(): Observable<T[]> {
     return this.http.get<T[]>(this.url);
   }

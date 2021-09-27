@@ -2,6 +2,7 @@ package com.backend.controller;
 
 import com.backend.models.Client;
 import com.backend.models.Organisme;
+import com.backend.models.Reservation;
 import com.backend.models.User;
 import com.backend.repository.ClientRepository;
 import com.backend.repository.OrganismeRepository;
@@ -42,6 +43,9 @@ public class BackendController {
     public Organisme signupOrganisme(@RequestBody Organisme organisme) {
         return service.signupOrganisme(organisme);
     }
+
+    @PostMapping("/backend/reservation/{id}")
+    public Reservation signupReservation(@RequestBody Reservation reservation, @PathVariable int id) { return service.createReservation(id, reservation);}
 
     @GetMapping(value = "/backend/client/{id}")
     public Client findByIdClient(@PathVariable("id") int id) {

@@ -1,0 +1,30 @@
+<app-header-organisme></app-header-organisme>
+
+<main>
+    <div class="container py-5">
+        <form [formGroup]="creerReservationForm" (ngSubmit)="onSubmit()">
+            <div *ngIf="validMessage != ''">
+                <h3 class="has-info">{{validMessage}}</h3>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input class="form-control" id="description" placeholder="Description" formControlName="description">
+            </div>
+            <div class="form-group">
+            <label for="nbPlaces">Nombre de places</label>
+            <input type="number" class="form-control" id="nbPlaces" placeholder="Nombre de places" formControlName="nbPlaces">
+            </div>
+            <div class="form-group">
+                <label for="lieu">Lieu</label>
+                <input class="form-control" id="lieu" placeholder="Lieu de l'événement" formControlName="lieu">
+            </div>
+            <div class="form-group">
+                <label for="dateLimite">Date Limite</label>
+                <input type="date" class="form-control" id="dateLimite" placeholder="La date limite pour s'inscire" formControlName="dateLimite">
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyez</button>
+        </form>
+    </div>
+</main>
+

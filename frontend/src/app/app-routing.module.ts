@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccueilClientComponent } from './components/accueil-client/accueil-client.component';
 import { AccueilOrganismeComponent } from './components/accueil-organisme/accueil-organisme.component';
+import { CreerReservationComponent } from './components/creer-reservation/creer-reservation.component';
 import { Error404Component } from './components/error404/error404.component';
 import { LoginComponent } from './components/login/login.component';
 import { SigninClientComponent } from './components/signin-client/signin-client.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'signinOrganisme', component:SigninOrganismeComponent},
   {path: 'accueil-client', component:AccueilClientComponent},
   {path: 'accueil-organisme', component:AccueilOrganismeComponent},
+  {path: 'creer-reservation', component:CreerReservationComponent},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: '**', component:Error404Component}
 ];

@@ -1,0 +1,25 @@
+<app-header-organisme></app-header-organisme>
+
+<main>
+    <div class="container py-5">
+            <h1>Liste des réservations de votre organisme</h1>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Nombre de Places</th>
+                <th scope="col">Lieu</th>
+                <th scope="col">Date Limite</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listReservations; let i = index">
+                    <td>{{item.description}}</td>
+                    <td>{{item.nbPlaces}}</td>
+                    <td>{{item.lieu}}</td>
+                    <td>{{item.dateLimite}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>

@@ -15,6 +15,7 @@ import { AccueilClientComponent } from './components/accueil-client/accueil-clie
 import { AccueilOrganismeComponent } from './components/accueil-organisme/accueil-organisme.component';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 import { CreerReservationComponent } from './components/creer-reservation/creer-reservation.component';
+import { ReservationsOrganismeComponent } from './components/reservations-organisme/reservations-organisme.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { CreerReservationComponent } from './components/creer-reservation/creer-
     AccueilClientComponent,
     AccueilOrganismeComponent,
     SanitizeHtmlPipe,
-    CreerReservationComponent
+    CreerReservationComponent,
+    ReservationsOrganismeComponent
   ],
   imports: [
     BrowserModule,

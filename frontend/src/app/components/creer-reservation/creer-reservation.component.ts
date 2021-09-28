@@ -15,7 +15,7 @@ export class CreerReservationComponent implements OnInit {
 
   creerReservationForm = new FormGroup({
     description : new FormControl('', Validators.required),
-    nbPlaces : new FormControl('', Validators.required),
+    nbPlaces : new FormControl('', [Validators.required, Validators.min(1)]),
     lieu : new FormControl('', Validators.required),
     dateLimite : new FormControl('', Validators.required),
   });
@@ -46,7 +46,7 @@ export class CreerReservationComponent implements OnInit {
         }
       );
     } else {
-      this.validMessage = 'Veuillez remplir le formulaire avant de le soumettre!';
+      this.validMessage = 'Veuillez remplir le formulaire avant de le soumettre! Notez que le nombre de places doit être supérieur ou égal à 1';
     }
   }
 

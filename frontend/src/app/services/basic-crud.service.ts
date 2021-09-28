@@ -24,6 +24,10 @@ export class BasicCrud <T, ID> {
   findAll(): Observable<T[]> {
     return this.http.get<T[]>(this.url);
   }
+  
+  findAllReservations(id : ID): Observable<T[]> {
+    return this.http.get<T[]>(this.url + '/reservation/' + id);
+  }
 
   findByIdClient(id: ID): Observable<T> {
     return this.http.get<T>(this.url + '/client/' + id);

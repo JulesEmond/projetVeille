@@ -50,4 +50,8 @@ export class BasicCrud <T, ID> {
     return this.http.get<T>(this.url + '/' + courriel + '/' + motDePasse);
   }
 
+  listeReservationsDispo(id:ID) : Observable<T[]> {
+    return this.http.get<T[]>(this.url + '/reservations/' + id)
+  }
+
 }

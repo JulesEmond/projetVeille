@@ -15,10 +15,10 @@ export class ReservationsOrganismeComponent implements OnInit {
   constructor(private service: ReservationService, private route: Router) {}
 
   ngOnInit(): void {
-      this.getAllEnfants();
+      this.getAllReservations();
   }
 
-  getAllEnfants(): void {
+  getAllReservations(): void {
     this.service.findAllReservations(parseInt(sessionStorage.getItem('ID'))).subscribe(
       (data) => {
         this.listReservations = data;

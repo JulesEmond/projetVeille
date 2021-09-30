@@ -78,4 +78,9 @@ public class BackendController {
         return null;
     }
 
+    @GetMapping(value = "/backend/reservations/{id}")
+    public List<Reservation> findReservationsDispo(@PathVariable("id") int id) {
+        return service.listeReservationDispo(id);
+    }
+
 }

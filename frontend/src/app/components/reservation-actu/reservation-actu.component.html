@@ -1,0 +1,32 @@
+<app-header></app-header>
+
+<main>
+    <div class="container py-5">
+            <h1>Liste des réservations actuelles</h1>
+            <div *ngIf="validMessage != ''">
+                <h3 class="has-info">{{validMessage}}</h3>
+            </div>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Nombre de Places</th>
+                <th scope="col">Lieu</th>
+                <th scope="col">Date Limite</th>
+                <th width="200px">Annulez</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listReservations; let i = index">
+                    <td>{{item.description}}</td>
+                    <td>{{item.nbPlaces}}</td>
+                    <td>{{item.lieu}}</td>
+                    <td>{{item.dateLimite}}</td>
+                    <td>
+                        <button type="button" (click)="reserver(item.id)" class="btn btn-danger mr-2">Annulez</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
